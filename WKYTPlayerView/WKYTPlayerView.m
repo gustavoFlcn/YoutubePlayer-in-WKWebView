@@ -573,7 +573,35 @@ NSString static *const kWKYTPlayerSyndicationRegexPattern = @"^https://tpc.googl
         if([self handleHttpNavigationToUrl:request.URL]) {
             decisionHandler(WKNavigationActionPolicyAllow);
         } else {
-            decisionHandler(WKNavigationActionPolicyCancel);
+//
+            NSString * aString = request.URL.absoluteString;
+            if ([aString containsString:@"watch"]) {
+                NSString *newId;
+                NSString *listId;
+                NSScanner *scanner = [NSScanner scannerWithString:aString];
+                if ([aString containsString:@"list"]) {
+                    [scanner scanUpToString:@"list=" intoString:nil];
+                    [scanner scanString:@"list=" intoString:nil];
+                    [scanner scanUpToString:@"&" intoString:&listId];
+                                        
+                    [self cuePlaylistByPlaylistId:listId index:1 startSeconds:0.0 suggestedQuality:kWKYTPlaybackQualityDefault];
+                }
+                else {
+                    NSLog(@"É um vídeo");
+                    [scanner scanUpToString:@"v=" intoString:nil];
+                    [scanner scanString:@"v=" intoString:nil];
+                    [scanner scanUpToString:@"&" intoString:&newId];
+                    [self cueVideoById:newId startSeconds:0 suggestedQuality:kWKYTPlaybackQualityDefault];
+                }
+                
+                decisionHandler(WKNavigationActionPolicyAllow);
+
+            }else {
+                [[UIApplication sharedApplication] openURL:request.URL];
+                decisionHandler(WKNavigationActionPolicyCancel);
+            }
+
+            
         }
         return;
     }
@@ -842,7 +870,6 @@ NSString static *const kWKYTPlayerSyndicationRegexPattern = @"^https://tpc.googl
     if (ytMatch || adMatch || oauthMatch || staticProxyMatch || syndicationMatch) {
         return YES;
     } else {
-        [[UIApplication sharedApplication] openURL:url];
         return NO;
     }
 }
@@ -1078,7 +1105,7 @@ NSString static *const kWKYTPlayerSyndicationRegexPattern = @"^https://tpc.googl
 - (WKWebView *)createNewWebView {
     
     // WKWebView equivalent for UI Web View's scalesPageToFit
-    // 
+    //
     NSString *jScript = @"var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);";
     
     WKUserScript *wkUScript = [[WKUserScript alloc] initWithSource:jScript injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
