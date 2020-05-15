@@ -35,6 +35,16 @@
     <div class="embed-container">
         <div id="player"></div>
     </div>
+     
+     <!-- Nao sei se isso vai dar certo -->
+     <script>
+        var $ = document.getElementById("meuBotao");
+        function disableElements(){
+            $('ytp-left-controls').attr("style", "display: none !important");
+        }
+        disableElements();
+    </script>
+     
     <script src="https://www.youtube.com/iframe_api" onerror="window.location.href='ytplayer://onYouTubeIframeAPIFailedToLoad'"></script>
     <script>
     var player;
