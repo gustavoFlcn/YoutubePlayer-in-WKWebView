@@ -81,6 +81,13 @@
         }
         window.location.href = 'ytplayer://onError?data=' + event.data;
     }
+         
+    function showInFullscreen (){    
+        var requestFullScreen = iframe.requestFullScreen || iframe.mozRequestFullScreen || iframe.webkitRequestFullScreen;
+        if (requestFullScreen) {
+            requestFullScreen.bind(iframe)();
+        }
+    }
     
     window.onresize = function() {
         player.setSize(window.innerWidth, window.innerHeight);
