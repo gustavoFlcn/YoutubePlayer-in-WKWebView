@@ -894,16 +894,12 @@ NSString static *const kWKYTPlayerSyndicationRegexPattern = @"^https://tpc.googl
     if (additionalPlayerParams) {
         [playerParams addEntriesFromDictionary:additionalPlayerParams];
     }
-    if (){
-        
-    }
-    
     
     if (![playerParams objectForKey:@"height"]) {
-        [playerParams setValue:@"360" forKey:@"height"];
+        [playerParams setValue:@"100%" forKey:@"height"];
     }
     if (![playerParams objectForKey:@"width"]) {
-        [playerParams setValue:@"640" forKey:@"width"];
+        [playerParams setValue:@"100%" forKey:@"width"];
     }
     
     [playerParams setValue:playerCallbacks forKey:@"events"];
